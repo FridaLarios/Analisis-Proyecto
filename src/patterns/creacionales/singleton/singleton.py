@@ -9,20 +9,24 @@ class GestorDeInventario:
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance = super(GestorDeInventario, cls).__new__(cls, *args, **kwargs)
+            cls._instance = super(GestorDeInventario, cls).__new__(cls)
+            cls._instance._initialized = False
         return cls._instance
 
     def __init__(self):
-        pass
+        if self._initialized:  # Evita inicialización múltiple
+            return
+        self._initialized = True
+        # Inicializa variables necesarias aquí
 
-    # Método para obtener el inventario de materias primas
+    @staticmethod
+    def get_instance():
+        if not GestorDeInventario._instance:
+            GestorDeInventario()
+        return GestorDeInventario._instance
+
     def obtener_inventario_materias_primas(self):
         return controlar_inventario()
 
-    # Método para verificar y generar órdenes de compra si es necesario
-    def verificar_generar_ordenes_compra(self):
-        generar_orden_compra()
-
-    # Método para obtener el inventario de productos terminados
     def obtener_inventario_productos(self):
         return controlar_inventario_productos()
